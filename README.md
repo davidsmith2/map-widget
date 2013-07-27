@@ -1,4 +1,4 @@
 Map Widget
 ==========
 
-Interactive map widget made with Backbone and D3.
+Interactive map widget made with Backbone.js and D3.js.
