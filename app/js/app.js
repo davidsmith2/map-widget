@@ -25,12 +25,10 @@ function (States, Map, Router, AppView, MapView) {
                 //console.log(collection);
                 //console.log(response);
                 //console.log(options);
-
                 self.router.viewStates({
                     map: self.map,
                     data: response.features
                 });
-
             },
             error: function (collection, response, options) {
                 //console.log(collection);

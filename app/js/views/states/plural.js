@@ -11,39 +11,7 @@ function (d3) {
         tagName: "g",
 
         initialize: function (options) {
-            var self = this;
-            this.map = options.map;
-            this.data = options.data;
-            this.add();
-            this.draw();
-            this.drawPaths();
-        },
-
-        add: function () {
-            this.map.g = d3.select(this.el).append(this.tagName);
-        },
-
-        draw: function () {
-            this.map.g.attr("id", this.id);
-        },
-
-        drawPaths: function () {
-            var self = this,
-                tagName = "path",
-                attrs,
-                events;
-
-            attrs = {
-                class: "path",
-                d: this.map.path,
-                id: function (d) {
-                    return d.properties.ST_ABBR;
-                },
-                title: "title",
-                stroke: "#000",
-                "stroke-width": "1px",
-                fill: "#fff"
-            };
+            var self = this, events;
 
             events = {
                 mouseover: function (d) {
@@ -62,7 +30,36 @@ function (d3) {
                 }
             };
 
-            this.map.g
+            this.map = options.map;
+            this.data = options.data;
+            this.addGroups();
+            this.addPaths(events);
+            this.addLabels(events);
+        },
+
+        addGroups: function () {
+            this.map.paths = d3.select(this.el).append(this.tagName).attr("id", "paths");
+            this.map.labels = d3.select(this.el).append(this.tagName).attr("id", "labels");
+        },
+
+        addPaths: function (events) {
+            var self = this,
+                tagName = "path",
+                attrs;
+
+            attrs = {
+                class: "path",
+                d: this.map.path,
+                id: function (d) {
+                    return d.properties.ST_ABBR;
+                },
+                title: "title",
+                stroke: "#000",
+                "stroke-width": "1px",
+                fill: "#fff"
+            };
+
+            this.map.paths
                 .selectAll(tagName)
                 .data(this.data)
                 .enter()
@@ -72,20 +69,44 @@ function (d3) {
 
         },
 
-        handleMouseover: function (data, event) {
+        addLabels: function (events) {
+            var self = this,
+                tagName = "text",
+                attrs;
+
+            attrs = {
+                class: "text",
+                "text-anchor": function (d) {
+                    return "middle";
+                },
+                title: "title",
+                transform: function (d) {
+                    var position = self.map.path.centroid(d);
+                    return "translate(" + position + ")";
+                }
+            };
+
+            this.map.labels
+                .selectAll(tagName)
+                .data(this.data)
+                .enter()
+                .append(tagName)
+                .text(function (d) {
+                    return d.properties.ST_ABBR;
+
+                })
+                .attr(attrs)
+                .events(events);
+
         },
 
-        handleMouseout: function (data, event) {
+        handleMouseover: function (data, event) {},
 
-        },
+        handleMouseout: function (data, event) {},
 
-        handleClick: function (data, event) {
-        },
+        handleClick: function (data, event) {},
 
-        handleDblclick: function (data, event) {
-            console.log(data);
-            console.log(event);
-        }
+        handleDblclick: function (data, event) {}
 
     });
 
