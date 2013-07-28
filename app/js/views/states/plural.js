@@ -93,10 +93,9 @@ function (d3) {
                 .append(tagName)
                 .text(function (d) {
                     return d.properties.ST_ABBR;
-
                 })
                 .attr(attrs)
-                .events(events);
+                .on(events);
 
         },
 
