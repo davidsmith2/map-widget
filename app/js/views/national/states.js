@@ -12,6 +12,9 @@ function (d3) {
         initialize: function (options) {
             var self = this, events;
 
+            this.map = options.map;
+            this.data = options.data;
+
             events = {
                 mouseover: function (d) {
                     self.handleMouseover(d, d3.event);
@@ -27,8 +30,6 @@ function (d3) {
                 }
             };
 
-            this.map = options.map;
-            this.data = options.data;
             this.addGroups();
             this.addPaths(events);
             this.addLabels(events);
@@ -74,7 +75,7 @@ function (d3) {
             attrs = {
                 class: "text",
                 "text-anchor": function (d) {
-                    return "middle";
+                    return labelAligner.align(d);
                 },
                 title: "title",
                 transform: function (d) {
@@ -96,27 +97,32 @@ function (d3) {
 
         },
 
-        handleMouseover: function (data, event) {
-            console.log(data);
-            console.log(event);
-        },
+        handleMouseover: function (data, event) {},
 
-        handleMouseout: function (data, event) {
-            console.log(data);
-            console.log(event);
-        },
+        handleMouseout: function (data, event) {},
 
-        handleClick: function (data, event) {
-            console.log(data);
-            console.log(event);
-        },
+        handleClick: function (data, event) {},
 
-        handleDblclick: function (data, event) {
-            console.log(data);
-            console.log(event);
-        }
+        handleDblclick: function (data, event) {}
 
     });
+
+    var labelAligner = {
+        labels: {
+            start: ["FL", "KS", "KY", "NY", "MI", "TN"],
+            end: ["LA"]
+        },
+        align: function (data) {
+            if (_.contains(this.labels.start, data.properties.ST_ABBR)) {
+                return "start";
+            }
+            if (_.contains(this.labels.end, data.properties.ST_ABBR)) {
+                return "end";
+            }
+            return "middle";
+        }
+
+    };
 
     return StatesView;
 
