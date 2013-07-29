@@ -1,5 +1,5 @@
 define([
-    "views/states/plural"
+    "views/national/states"
 ],
 
 function (StatesView) {
@@ -11,7 +11,7 @@ function (StatesView) {
         },
 
         viewStates: function (options) {
-            var view = new StatesView({
+            return new StatesView({
                 map: options.map,
                 data: options.data
             });
