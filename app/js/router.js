@@ -1,8 +1,9 @@
 define([
-    "views/national/states"
+    "views/national/paths",
+    "views/national/labels"
 ],
 
-function (StatesView) {
+function (StatesPathsView, StatesLabelsView) {
 
     var Router = Backbone.Router.extend({
 
@@ -11,10 +12,15 @@ function (StatesView) {
         },
 
         viewStates: function (options) {
-            return new StatesView({
-                map: options.map,
-                data: options.data
-            });
+            initPaths(options);
+            initLabels(options);
+            function initPaths (options) {
+                return new StatesPathsView(options);
+
+            }
+            function initLabels (options) {
+                return new StatesLabelsView(options);
+            }
         }
 
     });

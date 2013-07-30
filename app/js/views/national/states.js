@@ -10,11 +10,7 @@ function (d3) {
         tagName: "g",
 
         initialize: function (options) {
-            var self = this, events;
-
-            this.map = options.map;
-            this.data = options.data;
-
+            var self = this;
             events = {
                 mouseover: function (d) {
                     self.handleMouseover(d, d3.event);
@@ -29,100 +25,29 @@ function (d3) {
                     self.handleDblclick(d, d3.event);
                 }
             };
-
-            this.addGroups();
-            this.addPaths(events);
-            this.addLabels(events);
+            this.map = options.map;
+            this.data = options.data;
+            this.addGroup();
+            this.addElements(events);
         },
 
-        addGroups: function () {
-            this.map.paths = d3.select(this.el).append(this.tagName).attr("id", "paths");
-            this.map.labels = d3.select(this.el).append(this.tagName).attr("id", "labels");
+        handleMouseover: function (data, event) {
+            event.stopImmediatePropagation();
         },
 
-        addPaths: function (events) {
-            var self = this,
-                tagName = "path",
-                attrs;
-
-            attrs = {
-                class: "path",
-                d: this.map.path,
-                id: function (d) {
-                    return d.properties.ST_ABBR;
-                },
-                title: "title",
-                stroke: "#000",
-                "stroke-width": "1px",
-                fill: "#fff"
-            };
-
-            this.map.paths
-                .selectAll(tagName)
-                .data(this.data)
-                .enter()
-                .append(tagName)
-                .attr(attrs)
-                .on(events);
-
+        handleMouseout: function (data, event) {
+            event.stopImmediatePropagation();
         },
 
-        addLabels: function (events) {
-            var self = this,
-                tagName = "text",
-                attrs;
-
-            attrs = {
-                class: "text",
-                "text-anchor": function (d) {
-                    return labelAligner.align(d);
-                },
-                title: "title",
-                transform: function (d) {
-                    var position = self.map.path.centroid(d);
-                    return "translate(" + position + ")";
-                }
-            };
-
-            this.map.labels
-                .selectAll(tagName)
-                .data(this.data)
-                .enter()
-                .append(tagName)
-                .text(function (d) {
-                    return d.properties.ST_ABBR;
-                })
-                .attr(attrs)
-                .on(events);
-
+        handleClick: function (data, event) {
+            event.stopImmediatePropagation();
         },
 
-        handleMouseover: function (data, event) {},
-
-        handleMouseout: function (data, event) {},
-
-        handleClick: function (data, event) {},
-
-        handleDblclick: function (data, event) {}
-
-    });
-
-    var labelAligner = {
-        labels: {
-            start: ["FL", "KS", "KY", "NY", "MI", "TN"],
-            end: ["LA"]
-        },
-        align: function (data) {
-            if (_.contains(this.labels.start, data.properties.ST_ABBR)) {
-                return "start";
-            }
-            if (_.contains(this.labels.end, data.properties.ST_ABBR)) {
-                return "end";
-            }
-            return "middle";
+        handleDblclick: function (data, event) {
+            event.stopImmediatePropagation();
         }
 
-    };
+    });
 
     return StatesView;
 
