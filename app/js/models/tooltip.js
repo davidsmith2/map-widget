@@ -7,7 +7,7 @@ function () {
         defaults: {
             abbreviation: "",
             name: "",
-            population: ""
+            population: 0
         }
     });
 
