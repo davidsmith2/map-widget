@@ -1,9 +1,14 @@
 define([
+    "models/state"
 ],
 
-function () {
+function (State) {
+
     var States = Backbone.Collection.extend({
-        url: "/json/states.json"
+        model: State,
+        url: "/json/geo/states.json"
     });
+
     return States;
+
 });

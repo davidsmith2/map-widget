@@ -6,7 +6,13 @@ requirejs.config({
     },
     shim: {
         "lib/underscore/underscore-min": {
-            exports: "_"
+            exports: "_",
+            init: function () {
+                this._.templateSettings = {
+                    interpolate: /\{\{(.+?)\}\}/g
+                };
+                return _;
+            }
         },
         "lib/backbone/backbone-min": {
             deps: ["lib/underscore/underscore-min"],

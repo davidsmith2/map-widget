@@ -8,6 +8,7 @@ function (d3, StatesView) {
     var StatesPathsView = StatesView.extend({
 
         id: "paths",
+        tabAreaLimit: 10000,
 
         addGroup: function () {
             this.map[this.id] = d3.select(this.el).append(this.tagName).attr("id", this.id);
@@ -19,7 +20,13 @@ function (d3, StatesView) {
                 attrs;
 
             attrs = {
-                class: "path",
+                class: function (d) {
+                    var population = getPopulation();
+                    if (d.properties.CENSUSAREA < self.tabAreaLimit) {
+                        self.addToTabs(d);
+                    }
+                    return population;
+                },
                 d: this.map.path,
                 id: function (d) {
                     return d.properties.ST_ABBR;
@@ -37,9 +44,15 @@ function (d3, StatesView) {
                 .append(tagName)
                 .attr(attrs)
                 .on(events);
-        }
+        },
+
+        addToTabs: function (geoData, population) {}
 
     });
+
+    function getPopulation () {
+        return 1;
+    }
 
     return StatesPathsView;
 

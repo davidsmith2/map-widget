@@ -1,0 +1,19 @@
+{
+    "states": [
+        {
+            "abbreviation": "DC",
+            "name": "District of Columbia",
+            "population": 632323
+        },
+        {
+            "abbreviation": "MD",
+            "name": "Maryland",
+            "population": 5884563
+        },
+        {
+            "abbreviation": "VA",
+            "name": "Virginia",
+            "population": 8185866
+        }
+    ]
+}
